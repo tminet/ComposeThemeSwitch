@@ -1,0 +1,24 @@
+buildscript {
+    ext {
+        kotlin_ver = '1.6.10'
+        coroutines_ver = '1.6.0'
+        compose_ver = '1.2.0-alpha01'
+        hilt_ver = '2.40.5'
+        accompanist_ver = '0.20.0'
+    }
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_ver"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_ver"
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
