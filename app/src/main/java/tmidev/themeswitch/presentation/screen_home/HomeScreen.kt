@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.hilt.navigation.compose.hiltViewModel
 import tmidev.themeswitch.R
 import tmidev.themeswitch.domain.model.Post
 import tmidev.themeswitch.presentation.MainViewModel
@@ -26,11 +25,10 @@ import tmidev.themeswitch.presentation.theme.spacing
 
 @Composable
 fun HomeScreen(
-    mainViewModel: MainViewModel,
-    homeViewModel: HomeViewModel = hiltViewModel()
+    mainViewModel: MainViewModel
 ) {
     val isAppThemeDarkMode = mainViewModel.isAppThemeDarkMode.value ?: isSystemInDarkTheme()
-    val postList = homeViewModel.postList.value
+    val postList = mainViewModel.postList.value
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -53,9 +51,7 @@ fun HomeScreen(
 }
 
 @Composable
-private fun ComposePostItem(
-    post: Post,
-) {
+private fun ComposePostItem(post: Post) {
     var expanded by remember { mutableStateOf(value = false) }
     val expandIcon = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore
     Card(
@@ -65,6 +61,7 @@ private fun ComposePostItem(
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = MaterialTheme.spacing.medium)

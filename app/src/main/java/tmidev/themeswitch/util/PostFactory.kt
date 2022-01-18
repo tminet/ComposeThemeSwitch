@@ -10,7 +10,7 @@ object PostFactory {
 
     private fun createPost(index: Int): Post {
         val loremIpsum = LoremIpsum(
-            words = (5..20).random()
+            words = (15..30).random()
         ).values.joinToString { it }
         return Post(
             id = index,
