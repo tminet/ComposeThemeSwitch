@@ -33,6 +33,7 @@ fun TopBarWithThemeSwitch(
     darkMode: Boolean,
     onThemeSwitchClick: () -> Unit
 ) {
+    val themeSwitchIcon = if (darkMode) Icons.Outlined.LightMode else Icons.Outlined.DarkMode
     TopBar {
         Text(
             text = stringResource(id = title),
@@ -46,7 +47,7 @@ fun TopBarWithThemeSwitch(
             onClick = { onThemeSwitchClick() }
         ) {
             Icon(
-                imageVector = if (darkMode) Icons.Outlined.LightMode else Icons.Outlined.DarkMode,
+                imageVector = themeSwitchIcon,
                 tint = MaterialTheme.colors.onPrimary,
                 contentDescription = stringResource(id = R.string.switchAppTheme)
             )
