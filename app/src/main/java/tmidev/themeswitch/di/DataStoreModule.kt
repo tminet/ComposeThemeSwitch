@@ -11,11 +11,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import tmidev.themeswitch.util.USER_PREFERENCES_FILE_NAME
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object FrameworkModule {
+object DataStoreModule {
     @Provides
+    @Singleton
     fun provideDataStorePreferences(
         @ApplicationContext context: Context
     ): DataStore<Preferences> = PreferenceDataStoreFactory.create(

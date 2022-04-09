@@ -7,7 +7,6 @@ import javax.inject.Inject
 class IsAppThemeDarkModeUseCaseImpl @Inject constructor(
     private val userPreferences: UserPreferences
 ) : IsAppThemeDarkModeUseCase {
-    override fun invoke(): Flow<Boolean?> {
-        return userPreferences.isAppThemeDarkMode
-    }
+    override fun invoke(): Flow<Boolean?> =
+        userPreferences.isAppThemeDarkMode
 }

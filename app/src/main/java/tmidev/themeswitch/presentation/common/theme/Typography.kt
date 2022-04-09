@@ -1,4 +1,4 @@
-package tmidev.themeswitch.presentation.theme
+package tmidev.themeswitch.presentation.common.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.font.Font

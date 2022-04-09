@@ -1,2 +1,0 @@
--dontobfuscate
--keepattributes SourceFile, LineNumberTable

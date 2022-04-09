@@ -3,9 +3,7 @@
     package="tmidev.themeswitch">
 
     <application
-        android:name="tmidev.themeswitch.App"
-        android:allowBackup="false"
-        android:fullBackupContent="false"
+        android:name=".App"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -13,8 +11,9 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="tmidev.themeswitch.presentation.MainActivity"
-            android:exported="true">
+            android:name=".presentation.MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

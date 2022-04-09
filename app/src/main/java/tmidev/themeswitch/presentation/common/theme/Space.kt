@@ -1,4 +1,4 @@
-package tmidev.themeswitch.presentation.theme
+package tmidev.themeswitch.presentation.common.theme
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable

@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
+    id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.kapt'
     id 'dagger.hilt.android.plugin'
 }
 
@@ -19,18 +19,9 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix ".debug"
             minifyEnabled false
             shrinkResources false
             debuggable true
-        }
-
-        staging {
-            initWith debug
-            applicationIdSuffix ".staging"
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
-                    'proguard-rules.pro', 'proguard-rules-staging.pro'
         }
 
         release {
@@ -49,7 +40,6 @@ android {
 
     kotlinOptions {
         jvmTarget = '1.8'
-        useIR = true
     }
 
     buildFeatures {
@@ -70,25 +60,25 @@ android {
 dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.activity:activity-compose:1.4.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_ver"
 
     implementation "androidx.compose.ui:ui:$compose_ver"
     implementation "androidx.compose.material:material:$compose_ver"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_ver"
-    implementation "androidx.compose.material:material-icons-extended:$compose_ver"
+    implementation "androidx.compose.material:material-icons-extended:$compose_ver" // big size if shrink disabled
 
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_ver"
     implementation "com.google.dagger:hilt-android:$hilt_ver"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_ver"
 
-    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-rc01'
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
-    implementation 'androidx.navigation:navigation-compose:2.4.0-rc01'
-
-    implementation 'androidx.datastore:datastore-preferences:1.0.0'
+    implementation 'androidx.navigation:navigation-compose:2.4.2'
 
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_ver"
+
+    implementation 'androidx.datastore:datastore-preferences:1.0.0'
 
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ver"
 }

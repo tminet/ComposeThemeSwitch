@@ -14,9 +14,11 @@ import javax.inject.Inject
 class UserPreferencesImplDataStore @Inject constructor(
     private val dataStorePreferences: DataStore<Preferences>
 ) : UserPreferences {
+    private val tag = this::class.java.simpleName
+
     override val isAppThemeDarkMode: Flow<Boolean?> = dataStorePreferences.data
         .catch { exception ->
-            Log.e(TAG, exception.localizedMessage ?: "isAppThemeDarkMode Exception")
+            exception.localizedMessage?.let { Log.e(tag, it) }
             emit(emptyPreferences())
         }
         .map { preferences ->
@@ -31,9 +33,5 @@ class UserPreferencesImplDataStore @Inject constructor(
 
     private object PreferencesKeys {
         val IS_APP_THEME_DARK_MODE = booleanPreferencesKey(name = "is_app_theme_dark_mode")
-    }
-
-    companion object {
-        private val TAG = UserPreferencesImplDataStore::class.java.simpleName
     }
 }

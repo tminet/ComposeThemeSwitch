@@ -6,7 +6,6 @@ import javax.inject.Inject
 class UpdateAppThemeUseCaseImpl @Inject constructor(
     private val userPreferences: UserPreferences
 ) : UpdateAppThemeUseCase {
-    override suspend fun invoke(darkMode: Boolean) {
+    override suspend fun invoke(darkMode: Boolean) =
         userPreferences.updateAppTheme(darkMode = darkMode)
-    }
 }

@@ -9,8 +9,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExpandLess
-import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.rounded.ExpandLess
+import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,28 +20,31 @@ import tmidev.themeswitch.R
 import tmidev.themeswitch.domain.model.Post
 import tmidev.themeswitch.presentation.MainViewModel
 import tmidev.themeswitch.presentation.common.TopBarWithThemeSwitch
-import tmidev.themeswitch.presentation.theme.elevating
-import tmidev.themeswitch.presentation.theme.spacing
+import tmidev.themeswitch.presentation.common.theme.elevating
+import tmidev.themeswitch.presentation.common.theme.spacing
 
 @Composable
-fun HomeScreen(
-    mainViewModel: MainViewModel
-) {
+fun HomeScreen(mainViewModel: MainViewModel) {
     val isAppThemeDarkMode = mainViewModel.isAppThemeDarkMode.value ?: isSystemInDarkTheme()
     val postList = mainViewModel.postList.value
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        TopBarWithThemeSwitch(
-            title = R.string.titleHomeScreen,
-            darkMode = isAppThemeDarkMode
-        ) {
-            mainViewModel.updateAppTheme(darkMode = !isAppThemeDarkMode)
+
+    val scaffoldState = rememberScaffoldState()
+
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            TopBarWithThemeSwitch(
+                title = R.string.titleHomeScreen,
+                darkMode = isAppThemeDarkMode
+            ) {
+                mainViewModel.updateAppTheme(darkMode = !isAppThemeDarkMode)
+            }
         }
+    ) {
         LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(MaterialTheme.spacing.medium),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
-            modifier = Modifier.fillMaxWidth()
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
         ) {
             items(items = postList) { post ->
                 ComposePostItem(post = post)
@@ -53,15 +56,15 @@ fun HomeScreen(
 @Composable
 private fun ComposePostItem(post: Post) {
     var expanded by remember { mutableStateOf(value = false) }
-    val expandIcon = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore
+    val expandIcon = if (expanded) Icons.Rounded.ExpandLess else Icons.Rounded.ExpandMore
+
     Card(
+        modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
         elevation = MaterialTheme.elevating.none,
-        backgroundColor = MaterialTheme.colors.surface,
-        modifier = Modifier.fillMaxWidth()
+        backgroundColor = MaterialTheme.colors.surface
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = MaterialTheme.spacing.medium)
@@ -70,23 +73,25 @@ private fun ComposePostItem(post: Post) {
                         dampingRatio = Spring.DampingRatioNoBouncy,
                         stiffness = Spring.StiffnessLow
                     )
-                )
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
+                    modifier = Modifier
+                        .padding(horizontal = MaterialTheme.spacing.small)
+                        .weight(weight = 1F),
                     text = post.title,
                     color = MaterialTheme.colors.onSurface,
                     style = MaterialTheme.typography.body1,
                     fontWeight = FontWeight.Bold,
-                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .padding(horizontal = MaterialTheme.spacing.small)
-                        .weight(weight = 1F)
+                    maxLines = 1
                 )
+
                 IconButton(
                     onClick = { expanded = !expanded }
                 ) {
@@ -97,13 +102,14 @@ private fun ComposePostItem(post: Post) {
                     )
                 }
             }
+
             if (expanded) Text(
-                text = post.post,
-                color = MaterialTheme.colors.onSurface,
-                style = MaterialTheme.typography.body1,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = MaterialTheme.spacing.medium)
+                    .padding(horizontal = MaterialTheme.spacing.medium),
+                text = post.post,
+                color = MaterialTheme.colors.onSurface,
+                style = MaterialTheme.typography.body1
             )
         }
     }

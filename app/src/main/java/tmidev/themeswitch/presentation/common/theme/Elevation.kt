@@ -1,4 +1,4 @@
-package tmidev.themeswitch.presentation.theme
+package tmidev.themeswitch.presentation.common.theme
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -11,7 +11,7 @@ data class Elevating(
     val none: Dp = 0.dp,
     val low: Dp = 4.dp,
     val medium: Dp = 6.dp,
-    val high: Dp = 8.dp,
+    val high: Dp = 8.dp
 )
 
 val LocalElevating = compositionLocalOf { Elevating() }
