@@ -18,6 +18,14 @@ data class Spacing(
 
 val LocalSpacing = compositionLocalOf { Spacing() }
 
+/**
+ * - none: 0dp
+ * - extra small: 4dp
+ * - small: 8dp
+ * - medium: 16dp
+ * - large: 32dp
+ * - extra large: 64dp
+ */
 val MaterialTheme.spacing: Spacing
     @Composable
     @ReadOnlyComposable

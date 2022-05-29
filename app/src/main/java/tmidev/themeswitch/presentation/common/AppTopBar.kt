@@ -5,7 +5,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.LightMode
@@ -27,7 +31,7 @@ private fun AppTopBar(
     modifier = Modifier.fillMaxWidth(),
     backgroundColor = backgroundColor,
     elevation = MaterialTheme.elevating.none,
-    contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.extraSmall),
+    contentPadding = PaddingValues(all = MaterialTheme.spacing.none),
     content = content
 )
 
@@ -40,8 +44,8 @@ fun AppTopBarSimple(
 ) = AppTopBar(backgroundColor = backgroundColor) {
     Text(
         modifier = Modifier
-            .padding(horizontal = MaterialTheme.spacing.medium)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(horizontal = MaterialTheme.spacing.medium),
         text = stringResource(id = title),
         color = titleColor,
         style = MaterialTheme.typography.h6,
@@ -59,29 +63,30 @@ fun TopBarWithThemeSwitch(
     backgroundColor: Color = MaterialTheme.colors.primary,
     darkMode: Boolean,
     onThemeSwitch: () -> Unit
-) {
-    val themeSwitchIcon = if (darkMode) Icons.Rounded.LightMode else Icons.Rounded.DarkMode
+) = AppTopBar(backgroundColor = backgroundColor) {
+    val themeSwitchIcon =
+        if (darkMode) Icons.Rounded.LightMode else Icons.Rounded.DarkMode
 
-    AppTopBar(backgroundColor = backgroundColor) {
-        Text(
-            modifier = Modifier
-                .padding(horizontal = MaterialTheme.spacing.medium)
-                .weight(weight = 1F),
-            text = stringResource(id = title),
-            color = titleColor,
-            style = MaterialTheme.typography.h6,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1
+    Text(
+        modifier = Modifier
+            .weight(weight = 1F)
+            .padding(start = MaterialTheme.spacing.medium),
+        text = stringResource(id = title),
+        color = titleColor,
+        style = MaterialTheme.typography.h6,
+        textAlign = TextAlign.Start,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1
+    )
+
+    IconButton(
+        modifier = Modifier.padding(horizontal = MaterialTheme.spacing.extraSmall),
+        onClick = onThemeSwitch
+    ) {
+        Icon(
+            imageVector = themeSwitchIcon,
+            contentDescription = stringResource(id = R.string.switchAppTheme),
+            tint = iconColor
         )
-
-        IconButton(
-            onClick = onThemeSwitch
-        ) {
-            Icon(
-                imageVector = themeSwitchIcon,
-                contentDescription = stringResource(id = R.string.switchAppTheme),
-                tint = iconColor
-            )
-        }
     }
 }

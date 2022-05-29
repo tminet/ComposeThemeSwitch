@@ -1,6 +1,5 @@
 package tmidev.themeswitch.presentation
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -9,7 +8,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import tmidev.themeswitch.domain.model.Post
 import tmidev.themeswitch.domain.usecase.IsAppThemeDarkModeUseCase
 import tmidev.themeswitch.domain.usecase.UpdateAppThemeUseCase
 import tmidev.themeswitch.util.PostFactory
@@ -20,16 +18,10 @@ class MainViewModel @Inject constructor(
     private val isAppThemeDarkModeUseCase: IsAppThemeDarkModeUseCase,
     private val updateAppThemeUseCase: UpdateAppThemeUseCase
 ) : ViewModel() {
-    private val _isLoading: MutableState<Boolean> = mutableStateOf(value = true)
-    val isLoading: State<Boolean> = _isLoading
+    private val _state = mutableStateOf(value = MainState())
+    val state: State<MainState> get() = _state
 
-    private val _isAppThemeDarkMode = mutableStateOf<Boolean?>(value = null)
-    val isAppThemeDarkMode: State<Boolean?> get() = _isAppThemeDarkMode
-
-    private val _postList = mutableStateOf(
-        value = PostFactory.createPostList(size = (20..40).random())
-    )
-    val postList: State<List<Post>> get() = _postList
+    private val staticPosts = PostFactory.createPostList(size = (20..40).random())
 
     init {
         loadAppConfigState()
@@ -37,15 +29,18 @@ class MainViewModel @Inject constructor(
 
     private fun loadAppConfigState() = viewModelScope.launch {
         isAppThemeDarkModeUseCase().collectLatest { isDarkTheme ->
-            _isAppThemeDarkMode.value = isDarkTheme
+            _state.value = _state.value.copy(
+                isAppThemeDarkMode = isDarkTheme,
+                posts = staticPosts
+            )
             delayToShowCustomAnimationOnAppStartup()
         }
     }
 
     private suspend fun delayToShowCustomAnimationOnAppStartup() {
-        if (_isLoading.value) {
+        if (_state.value.isLoading) {
             delay(timeMillis = 2000)
-            _isLoading.value = false
+            _state.value = _state.value.copy(isLoading = false)
         }
     }
 

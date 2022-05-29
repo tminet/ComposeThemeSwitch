@@ -23,16 +23,17 @@ class MainActivity : ComponentActivity() {
             val viewModel = hiltViewModel<MainViewModel>()
             val navController = rememberNavController()
 
-            val isAppThemeDarkMode by viewModel.isAppThemeDarkMode
+            val state by viewModel.state
 
+            val isAppThemeDarkMode = state.isAppThemeDarkMode ?: isSystemInDarkTheme()
             val startDestination = ScreenRouteType.Home
 
-            if (viewModel.isLoading.value) ComposeWaitState()
+            if (state.isLoading) ComposeWaitState()
             else ComposeContentState(
                 navController = navController,
                 startDestination = startDestination,
                 mainViewModel = viewModel,
-                isAppThemeDarkMode = isAppThemeDarkMode ?: isSystemInDarkTheme()
+                isAppThemeDarkMode = isAppThemeDarkMode
             )
         }
     }

@@ -1,6 +1,10 @@
 package tmidev.themeswitch.presentation.common
 
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,10 +45,10 @@ fun AppLoadingAnimation(
                 animationSpec = infiniteRepeatable(
                     animation = keyframes {
                         durationMillis = 1200
-                        0.0f at 0 with LinearOutSlowInEasing
-                        1.0f at 300 with LinearOutSlowInEasing
-                        0.0f at 600 with LinearOutSlowInEasing
-                        0.0f at 1200 with LinearOutSlowInEasing
+                        0.0F at 0 with LinearOutSlowInEasing
+                        1.0F at 300 with LinearOutSlowInEasing
+                        0.0F at 600 with LinearOutSlowInEasing
+                        0.0F at 1200 with LinearOutSlowInEasing
                     },
                     repeatMode = RepeatMode.Restart
                 )

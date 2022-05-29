@@ -13,13 +13,11 @@ fun MainNavHost(
     navController: NavHostController,
     startDestination: ScreenRouteType,
     mainViewModel: MainViewModel
+) = NavHost(
+    navController = navController,
+    startDestination = startDestination.route
 ) {
-    NavHost(
-        navController = navController,
-        startDestination = startDestination.route
-    ) {
-        homeScreen(mainViewModel = mainViewModel)
-    }
+    homeScreen(mainViewModel = mainViewModel)
 }
 
 private fun NavGraphBuilder.homeScreen(
