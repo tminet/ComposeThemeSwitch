@@ -2,14 +2,10 @@ buildscript {
     ext {
         gradle_ver = '7.2.1'
         kotlin_ver = '1.6.10'
-        coroutines_ver = '1.6.2'
+        coroutines_ver = '1.6.3'
         compose_ver = '1.1.1'
         hilt_ver = '2.42'
         accompanist_ver = '0.23.0'
-    }
-
-    dependencies {
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_ver"
     }
 }
 
@@ -18,6 +14,7 @@ plugins {
     id 'com.android.library' version "$gradle_ver" apply false
     id 'org.jetbrains.kotlin.android' version "$kotlin_ver" apply false
     id 'org.jetbrains.kotlin.kapt' version "$kotlin_ver" apply false
+    id 'com.google.dagger.hilt.android' version "$hilt_ver" apply false
 }
 
 task clean(type: Delete) {

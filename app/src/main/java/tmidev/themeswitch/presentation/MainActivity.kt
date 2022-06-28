@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -23,7 +22,7 @@ class MainActivity : ComponentActivity() {
             val viewModel = hiltViewModel<MainViewModel>()
             val navController = rememberNavController()
 
-            val state by viewModel.state
+            val state = viewModel.state
 
             val isAppThemeDarkMode = state.isAppThemeDarkMode ?: isSystemInDarkTheme()
             val startDestination = ScreenRouteType.Home

@@ -1,8 +1,11 @@
 package tmidev.themeswitch.presentation.screen_home
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,13 +37,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import tmidev.themeswitch.R
 import tmidev.themeswitch.domain.model.Post
 import tmidev.themeswitch.presentation.MainViewModel
-import tmidev.themeswitch.presentation.common.TopBarWithThemeSwitch
+import tmidev.themeswitch.presentation.common.AppTopBarWithThemeSwitch
 import tmidev.themeswitch.presentation.common.theme.elevating
 import tmidev.themeswitch.presentation.common.theme.spacing
 
 @Composable
 fun HomeScreen(mainViewModel: MainViewModel) {
-    val state by mainViewModel.state
+    val state = mainViewModel.state
 
     val isAppThemeDarkMode = state.isAppThemeDarkMode ?: isSystemInDarkTheme()
     val postList = state.posts
@@ -50,7 +53,7 @@ fun HomeScreen(mainViewModel: MainViewModel) {
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            TopBarWithThemeSwitch(
+            AppTopBarWithThemeSwitch(
                 title = R.string.titleHomeScreen,
                 darkMode = isAppThemeDarkMode
             ) {
@@ -84,13 +87,7 @@ private fun ComposePostItem(post: Post) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = MaterialTheme.spacing.medium)
-                .animateContentSize(
-                    animationSpec = spring(
-                        dampingRatio = Spring.DampingRatioNoBouncy,
-                        stiffness = Spring.StiffnessLow
-                    )
-                ),
+                .padding(all = MaterialTheme.spacing.medium),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
@@ -123,17 +120,25 @@ private fun ComposePostItem(post: Post) {
                 }
             }
 
-            if (expanded) Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = MaterialTheme.spacing.medium,
-                        vertical = MaterialTheme.spacing.none
-                    ),
-                text = post.post,
-                color = MaterialTheme.colors.onSurface,
-                style = MaterialTheme.typography.body1
-            )
+            AnimatedVisibility(
+                visible = expanded,
+                enter = fadeIn(animationSpec = tween()) +
+                        expandVertically(animationSpec = tween(durationMillis = 400)),
+                exit = fadeOut(animationSpec = tween()) +
+                        shrinkVertically(animationSpec = tween(durationMillis = 400))
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = MaterialTheme.spacing.medium,
+                            vertical = MaterialTheme.spacing.none
+                        ),
+                    text = post.post,
+                    color = MaterialTheme.colors.onSurface,
+                    style = MaterialTheme.typography.body1
+                )
+            }
         }
     }
 }

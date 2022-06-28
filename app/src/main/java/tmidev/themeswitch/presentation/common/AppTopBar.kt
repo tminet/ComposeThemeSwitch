@@ -26,10 +26,12 @@ import tmidev.themeswitch.presentation.common.theme.spacing
 @Composable
 private fun AppTopBar(
     backgroundColor: Color,
+    contentColor: Color,
     content: @Composable RowScope.() -> Unit
 ) = TopAppBar(
     modifier = Modifier.fillMaxWidth(),
     backgroundColor = backgroundColor,
+    contentColor = contentColor,
     elevation = MaterialTheme.elevating.none,
     contentPadding = PaddingValues(all = MaterialTheme.spacing.none),
     content = content
@@ -39,15 +41,18 @@ private fun AppTopBar(
 fun AppTopBarSimple(
     @StringRes title: Int,
     titleAlign: TextAlign = TextAlign.Start,
-    titleColor: Color = MaterialTheme.colors.onPrimary,
-    backgroundColor: Color = MaterialTheme.colors.primary
-) = AppTopBar(backgroundColor = backgroundColor) {
+    backgroundColor: Color = MaterialTheme.colors.primary,
+    contentColor: Color = MaterialTheme.colors.onPrimary
+) = AppTopBar(
+    backgroundColor = backgroundColor,
+    contentColor = contentColor
+) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = MaterialTheme.spacing.medium),
         text = stringResource(id = title),
-        color = titleColor,
+        color = contentColor,
         style = MaterialTheme.typography.h6,
         textAlign = titleAlign,
         overflow = TextOverflow.Ellipsis,
@@ -56,14 +61,16 @@ fun AppTopBarSimple(
 }
 
 @Composable
-fun TopBarWithThemeSwitch(
+fun AppTopBarWithThemeSwitch(
     @StringRes title: Int,
-    titleColor: Color = MaterialTheme.colors.onPrimary,
-    iconColor: Color = MaterialTheme.colors.onPrimary,
     backgroundColor: Color = MaterialTheme.colors.primary,
+    contentColor: Color = MaterialTheme.colors.onPrimary,
     darkMode: Boolean,
     onThemeSwitch: () -> Unit
-) = AppTopBar(backgroundColor = backgroundColor) {
+) = AppTopBar(
+    backgroundColor = backgroundColor,
+    contentColor = contentColor
+) {
     val themeSwitchIcon =
         if (darkMode) Icons.Rounded.LightMode else Icons.Rounded.DarkMode
 
@@ -72,7 +79,7 @@ fun TopBarWithThemeSwitch(
             .weight(weight = 1F)
             .padding(start = MaterialTheme.spacing.medium),
         text = stringResource(id = title),
-        color = titleColor,
+        color = contentColor,
         style = MaterialTheme.typography.h6,
         textAlign = TextAlign.Start,
         overflow = TextOverflow.Ellipsis,
@@ -86,7 +93,7 @@ fun TopBarWithThemeSwitch(
         Icon(
             imageVector = themeSwitchIcon,
             contentDescription = stringResource(id = R.string.switchAppTheme),
-            tint = iconColor
+            tint = contentColor
         )
     }
 }
