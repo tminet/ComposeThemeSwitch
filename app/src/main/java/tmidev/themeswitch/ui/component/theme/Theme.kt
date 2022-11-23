@@ -1,6 +1,5 @@
 package tmidev.themeswitch.ui.component.theme
 
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -16,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import tmidev.themeswitch.util.isCompatibleWithDynamicColors
 
 /**
  * App theme.
@@ -34,7 +34,7 @@ fun AppTheme(
     val systemUiController = rememberSystemUiController()
 
     val colorScheme = when {
-        useDynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        useDynamicColors && isCompatibleWithDynamicColors() -> {
             val context = LocalContext.current
             if (useDarkTheme) dynamicDarkColorScheme(context = context)
             else dynamicLightColorScheme(context = context)

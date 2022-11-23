@@ -6,9 +6,12 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import tmidev.themeswitch.domain.model.AppConfiguration
+import tmidev.themeswitch.domain.type.ThemeStyleType
 import javax.inject.Inject
 
 class UserPreferencesImplDataStore @Inject constructor(
@@ -16,28 +19,50 @@ class UserPreferencesImplDataStore @Inject constructor(
 ) : UserPreferences {
     private val tag = this::class.java.simpleName
 
-    override val isAppThemeDarkMode: Flow<Boolean?> = dataStorePreferences.data
+    override val appConfigurationStream: Flow<AppConfiguration> = dataStorePreferences.data
         .catch { exception ->
             exception.localizedMessage?.let { Log.e(tag, it) }
             emit(value = emptyPreferences())
         }
         .map { preferences ->
-            preferences[PreferencesKeys.IS_APP_THEME_DARK_MODE]
+            val useDynamicColors = preferences[PreferencesKeys.useDynamicColors] ?: true
+            val themeStyle = preferences[PreferencesKeys.themeStyle].toThemeStyleType()
+
+            AppConfiguration(
+                useDynamicColors = useDynamicColors,
+                themeStyle = themeStyle
+            )
         }
 
-    override suspend fun updateAppTheme(darkMode: Boolean?) {
+    override suspend fun toggleDynamicColors() {
         try {
-            val key = PreferencesKeys.IS_APP_THEME_DARK_MODE
             dataStorePreferences.edit { preferences ->
-                if (darkMode == null) preferences.remove(key = key)
-                else preferences[key] = darkMode
+                val current = preferences[PreferencesKeys.useDynamicColors] ?: true
+                preferences[PreferencesKeys.useDynamicColors] = !current
             }
         } catch (exception: Exception) {
             exception.localizedMessage?.let { Log.e(tag, it) }
         }
     }
 
+    override suspend fun changeThemeStyle(themeStyle: ThemeStyleType) {
+        try {
+            dataStorePreferences.edit { preferences ->
+                preferences[PreferencesKeys.themeStyle] = themeStyle.name
+            }
+        } catch (exception: Exception) {
+            exception.localizedMessage?.let { Log.e(tag, it) }
+        }
+    }
+
+    private fun String?.toThemeStyleType(): ThemeStyleType = when (this) {
+        ThemeStyleType.LightMode.name -> ThemeStyleType.LightMode
+        ThemeStyleType.DarkMode.name -> ThemeStyleType.DarkMode
+        else -> ThemeStyleType.FollowAndroidSystem
+    }
+
     private object PreferencesKeys {
-        val IS_APP_THEME_DARK_MODE = booleanPreferencesKey(name = "is_app_theme_dark_mode")
+        val useDynamicColors = booleanPreferencesKey(name = "use_dynamic_colors")
+        val themeStyle = stringPreferencesKey(name = "theme_style")
     }
 }

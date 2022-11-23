@@ -11,7 +11,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tmidev.themeswitch.domain.usecase.IsAppThemeDarkModeUseCase
+import tmidev.themeswitch.domain.type.ThemeStyleType
+import tmidev.themeswitch.domain.usecase.GetAppConfigurationStreamUseCase
 import javax.inject.Inject
 
 /**
@@ -19,7 +20,8 @@ import javax.inject.Inject
  */
 data class MainActivityState(
     val isLoading: Boolean,
-    val isAppThemeDarkMode: Boolean?
+    val useDynamicColors: Boolean,
+    val themeStyle: ThemeStyleType
 )
 
 /**
@@ -27,17 +29,19 @@ data class MainActivityState(
  */
 private data class MainViewModelState(
     val isLoading: Boolean = true,
-    val isAppThemeDarkMode: Boolean? = null
+    val useDynamicColors: Boolean = true,
+    val themeStyle: ThemeStyleType = ThemeStyleType.FollowAndroidSystem
 ) {
     fun asActivityState() = MainActivityState(
         isLoading = isLoading,
-        isAppThemeDarkMode = isAppThemeDarkMode
+        useDynamicColors = useDynamicColors,
+        themeStyle = themeStyle
     )
 }
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val isAppThemeDarkModeUseCase: IsAppThemeDarkModeUseCase
+    private val getAppConfigurationStreamUseCase: GetAppConfigurationStreamUseCase
 ) : ViewModel() {
     private val viewModelState = MutableStateFlow(value = MainViewModelState())
 
@@ -48,19 +52,20 @@ class MainViewModel @Inject constructor(
     )
 
     init {
-        watchAppThemeChanges()
+        watchAppConfigurationStream()
     }
 
-    private fun watchAppThemeChanges() {
+    private fun watchAppConfigurationStream() {
         viewModelScope.launch {
             viewModelState.update { it.copy(isLoading = true) }
             delay(timeMillis = 3000)
 
-            isAppThemeDarkModeUseCase().collectLatest { darkMode ->
+            getAppConfigurationStreamUseCase().collectLatest { appConfiguration ->
                 viewModelState.update { state ->
                     state.copy(
                         isLoading = false,
-                        isAppThemeDarkMode = darkMode
+                        useDynamicColors = appConfiguration.useDynamicColors,
+                        themeStyle = appConfiguration.themeStyle
                     )
                 }
             }

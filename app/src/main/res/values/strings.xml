@@ -11,6 +11,9 @@
 
     <string name="changeAppThemeInstruction">If you want to change the theme of the app, tap on Settings Button in the upper right corner.</string>
 
+    <string name="useDynamicColors">Use dynamic colors</string>
+
+    <string name="themeStyle">Theme style:</string>
     <string name="followAndroidSystem">Follow Android system</string>
     <string name="lightMode">Light mode</string>
     <string name="darkMode">Dark mode</string>

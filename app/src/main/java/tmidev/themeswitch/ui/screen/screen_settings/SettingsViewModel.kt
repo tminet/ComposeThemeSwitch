@@ -10,56 +10,73 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tmidev.themeswitch.domain.usecase.IsAppThemeDarkModeUseCase
-import tmidev.themeswitch.domain.usecase.UpdateAppThemeUseCase
+import tmidev.themeswitch.domain.type.ThemeStyleType
+import tmidev.themeswitch.domain.usecase.ChangeThemeStyleUseCase
+import tmidev.themeswitch.domain.usecase.GetAppConfigurationStreamUseCase
+import tmidev.themeswitch.domain.usecase.ToggleDynamicColorsUseCase
 import javax.inject.Inject
 
 /**
  * Data class that represents the state of screen.
  */
 data class SettingsScreenState(
-    val isAppThemeDarkMode: Boolean?
+    val useDynamicColors: Boolean,
+    val themeStyle: ThemeStyleType
 )
 
 /**
  * Data class that represents the state of the view model.
  */
 private data class SettingsViewModelState(
-    val isAppThemeDarkMode: Boolean? = null
+    val useDynamicColors: Boolean = true,
+    val themeStyle: ThemeStyleType = ThemeStyleType.FollowAndroidSystem
 ) {
-    fun asActivityState() = SettingsScreenState(
-        isAppThemeDarkMode = isAppThemeDarkMode
+    fun asScreenState() = SettingsScreenState(
+        useDynamicColors = useDynamicColors,
+        themeStyle = themeStyle
     )
 }
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val isAppThemeDarkModeUseCase: IsAppThemeDarkModeUseCase,
-    private val updateAppThemeUseCase: UpdateAppThemeUseCase
+    private val getAppConfigurationStreamUseCase: GetAppConfigurationStreamUseCase,
+    private val toggleDynamicColorsUseCase: ToggleDynamicColorsUseCase,
+    private val changeThemeStyleUseCase: ChangeThemeStyleUseCase
 ) : ViewModel() {
     private val viewModelState = MutableStateFlow(value = SettingsViewModelState())
 
-    val screenState = viewModelState.map { it.asActivityState() }.stateIn(
+    val screenState = viewModelState.map { it.asScreenState() }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
-        initialValue = viewModelState.value.asActivityState()
+        initialValue = viewModelState.value.asScreenState()
     )
 
     init {
-        watchAppThemeChanges()
+        watchAppConfigurationStream()
     }
 
-    private fun watchAppThemeChanges() {
+    private fun watchAppConfigurationStream() {
         viewModelScope.launch {
-            isAppThemeDarkModeUseCase().collectLatest { darkMode ->
-                viewModelState.update { it.copy(isAppThemeDarkMode = darkMode) }
+            getAppConfigurationStreamUseCase().collectLatest { appConfiguration ->
+                viewModelState.update { state ->
+                    state.copy(
+                        useDynamicColors = appConfiguration.useDynamicColors,
+                        themeStyle = appConfiguration.themeStyle
+                    )
+                }
             }
         }
     }
 
-    fun updateAppTheme(darkMode: Boolean?) {
+    fun toggleDynamicColors() {
         viewModelScope.launch {
-            updateAppThemeUseCase(darkMode = darkMode)
+            toggleDynamicColorsUseCase()
+        }
+    }
+
+    fun changeThemeStyle(themeStyle: ThemeStyleType) {
+        viewModelScope.launch {
+            changeThemeStyleUseCase(themeStyle = themeStyle)
         }
     }
 }

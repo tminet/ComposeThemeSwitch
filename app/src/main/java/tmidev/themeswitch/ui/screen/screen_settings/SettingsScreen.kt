@@ -4,16 +4,17 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.InputChip
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tmidev.themeswitch.R
+import tmidev.themeswitch.util.isCompatibleWithDynamicColors
 
 /**
  * Compose the Settings Screen.
@@ -69,62 +71,39 @@ fun SettingsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues = innerPadding),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(paddingValues = innerPadding)
         ) {
-            InputChip(
-                selected = screenState.isAppThemeDarkMode == null,
-                onClick = {
-                    if (screenState.isAppThemeDarkMode != null)
-                        viewModel.updateAppTheme(darkMode = null)
-                },
-                label = { Text(text = stringResource(id = R.string.followAndroidSystem)) },
-                leadingIcon = {
-                    Icon(
-                        modifier = Modifier.size(size = AssistChipDefaults.IconSize),
-                        painter = painterResource(id = R.drawable.ic_android),
-                        contentDescription = null
+            if (isCompatibleWithDynamicColors()) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(space = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.useDynamicColors),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+
+                    Switch(
+                        checked = screenState.useDynamicColors,
+                        onCheckedChange = { viewModel.toggleDynamicColors() }
                     )
                 }
+
+                Spacer(modifier = Modifier.height(height = 8.dp))
+            }
+
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                text = stringResource(id = R.string.themeStyle),
+                style = MaterialTheme.typography.bodyLarge
             )
 
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                InputChip(
-                    selected = screenState.isAppThemeDarkMode == false,
-                    onClick = {
-                        if (screenState.isAppThemeDarkMode != false)
-                            viewModel.updateAppTheme(darkMode = false)
-                    },
-                    label = { Text(text = stringResource(id = R.string.lightMode)) },
-                    leadingIcon = {
-                        Icon(
-                            modifier = Modifier.size(size = AssistChipDefaults.IconSize),
-                            painter = painterResource(id = R.drawable.ic_light_mode),
-                            contentDescription = null
-                        )
-                    }
-                )
-
-                InputChip(
-                    selected = screenState.isAppThemeDarkMode == true,
-                    onClick = {
-                        if (screenState.isAppThemeDarkMode != true)
-                            viewModel.updateAppTheme(darkMode = true)
-                    },
-                    label = { Text(text = stringResource(id = R.string.darkMode)) },
-                    leadingIcon = {
-                        Icon(
-                            modifier = Modifier.size(size = AssistChipDefaults.IconSize),
-                            painter = painterResource(id = R.drawable.ic_dark_mode),
-                            contentDescription = null
-                        )
-                    }
-                )
-            }
+            ThemeStyleSection(
+                modifier = Modifier.padding(horizontal = 32.dp),
+                themeStyle = screenState.themeStyle,
+                changeThemeStyle = { viewModel.changeThemeStyle(themeStyle = it) }
+            )
         }
     }
 }

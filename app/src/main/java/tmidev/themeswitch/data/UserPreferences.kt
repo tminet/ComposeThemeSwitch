@@ -1,9 +1,13 @@
 package tmidev.themeswitch.data
 
 import kotlinx.coroutines.flow.Flow
+import tmidev.themeswitch.domain.model.AppConfiguration
+import tmidev.themeswitch.domain.type.ThemeStyleType
 
 interface UserPreferences {
-    val isAppThemeDarkMode: Flow<Boolean?>
+    val appConfigurationStream: Flow<AppConfiguration>
 
-    suspend fun updateAppTheme(darkMode: Boolean?)
+    suspend fun toggleDynamicColors()
+
+    suspend fun changeThemeStyle(themeStyle: ThemeStyleType)
 }

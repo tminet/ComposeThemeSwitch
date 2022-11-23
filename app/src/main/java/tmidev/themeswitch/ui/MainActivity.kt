@@ -3,7 +3,6 @@ package tmidev.themeswitch.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +27,7 @@ import tmidev.themeswitch.ui.component.AppLoadingAnimation
 import tmidev.themeswitch.ui.component.appWindowInsets
 import tmidev.themeswitch.ui.component.theme.AppTheme
 import tmidev.themeswitch.ui.navigation.TopNavHost
+import tmidev.themeswitch.util.shouldUseDarkTheme
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @AndroidEntryPoint
@@ -64,10 +64,12 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 false -> {
-                    val isAppThemeDarkMode =
-                        activityState.isAppThemeDarkMode ?: isSystemInDarkTheme()
+                    val useDarkTheme = shouldUseDarkTheme(themeStyle = activityState.themeStyle)
 
-                    AppTheme(useDarkTheme = isAppThemeDarkMode) {
+                    AppTheme(
+                        useDarkTheme = useDarkTheme,
+                        useDynamicColors = activityState.useDynamicColors
+                    ) {
                         TopNavHost(
                             modifier = Modifier.fillMaxSize(),
                             windowInsets = windowsInsets,
