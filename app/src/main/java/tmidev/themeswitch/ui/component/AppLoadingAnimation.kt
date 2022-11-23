@@ -1,4 +1,4 @@
-package tmidev.themeswitch.presentation.common
+package tmidev.themeswitch.ui.component
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -29,7 +29,7 @@ fun AppLoadingAnimation(
     circleSize: Dp = 20.dp,
     spaceBetween: Dp = 10.dp,
     travelDistance: Dp = 15.dp,
-    circleColor: Color = MaterialTheme.colors.primary
+    circleColor: Color = MaterialTheme.colorScheme.primary
 ) {
     val circles = listOf(
         remember { Animatable(initialValue = 0F) },
@@ -40,6 +40,7 @@ fun AppLoadingAnimation(
     circles.forEachIndexed { index, animation ->
         LaunchedEffect(key1 = animation) {
             delay(timeMillis = index * 100L)
+
             animation.animateTo(
                 targetValue = 1F,
                 animationSpec = infiniteRepeatable(

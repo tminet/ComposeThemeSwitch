@@ -10,7 +10,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import tmidev.themeswitch.util.USER_PREFERENCES_FILE_NAME
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import tmidev.themeswitch.util.CoroutinesDispatchers
 import javax.inject.Singleton
 
 @Module
@@ -19,10 +21,12 @@ object DataStoreModule {
     @Provides
     @Singleton
     fun provideDataStorePreferences(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
+        coroutinesDispatchers: CoroutinesDispatchers
     ): DataStore<Preferences> = PreferenceDataStoreFactory.create(
+        scope = CoroutineScope(context = coroutinesDispatchers.io + SupervisorJob()),
         produceFile = {
-            context.preferencesDataStoreFile(name = USER_PREFERENCES_FILE_NAME)
+            context.preferencesDataStoreFile(name = "user_preferences")
         }
     )
 }

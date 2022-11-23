@@ -19,15 +19,21 @@ class UserPreferencesImplDataStore @Inject constructor(
     override val isAppThemeDarkMode: Flow<Boolean?> = dataStorePreferences.data
         .catch { exception ->
             exception.localizedMessage?.let { Log.e(tag, it) }
-            emit(emptyPreferences())
+            emit(value = emptyPreferences())
         }
         .map { preferences ->
             preferences[PreferencesKeys.IS_APP_THEME_DARK_MODE]
         }
 
-    override suspend fun updateAppTheme(darkMode: Boolean) {
-        dataStorePreferences.edit { preferences ->
-            preferences[PreferencesKeys.IS_APP_THEME_DARK_MODE] = darkMode
+    override suspend fun updateAppTheme(darkMode: Boolean?) {
+        try {
+            val key = PreferencesKeys.IS_APP_THEME_DARK_MODE
+            dataStorePreferences.edit { preferences ->
+                if (darkMode == null) preferences.remove(key = key)
+                else preferences[key] = darkMode
+            }
+        } catch (exception: Exception) {
+            exception.localizedMessage?.let { Log.e(tag, it) }
         }
     }
 

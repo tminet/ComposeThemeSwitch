@@ -1,22 +1,21 @@
 buildscript {
     ext {
-        gradle_ver = '7.2.1'
-        kotlin_ver = '1.6.10'
-        coroutines_ver = '1.6.3'
-        compose_ver = '1.1.1'
-        hilt_ver = '2.42'
-        accompanist_ver = '0.23.0'
+        gradleVer = "7.3.1"
+        kotlinVer = "1.7.20"
+        composeCompilerVer = "1.3.2"
+        composeUiVer = "1.3.1"
+        material3Ver = "1.0.1"
+        accompanistVer = "0.27.1"
+        hiltVer = "2.44.2"
+        lifecycleVer = "2.6.0-alpha03"
+        coroutinesVer = "1.6.4"
     }
 }
 
 plugins {
-    id 'com.android.application' version "$gradle_ver" apply false
-    id 'com.android.library' version "$gradle_ver" apply false
-    id 'org.jetbrains.kotlin.android' version "$kotlin_ver" apply false
-    id 'org.jetbrains.kotlin.kapt' version "$kotlin_ver" apply false
-    id 'com.google.dagger.hilt.android' version "$hilt_ver" apply false
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
+    id "com.android.application" version "$gradleVer" apply false
+    id "com.android.library" version "$gradleVer" apply false
+    id "org.jetbrains.kotlin.android" version "$kotlinVer" apply false
+    id "org.jetbrains.kotlin.kapt" version "$kotlinVer" apply false
+    id "com.google.dagger.hilt.android" version "$hiltVer" apply false
 }

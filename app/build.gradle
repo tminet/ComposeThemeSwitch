@@ -1,19 +1,26 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    id 'org.jetbrains.kotlin.kapt'
-    id 'dagger.hilt.android.plugin'
+    id "com.android.application"
+    id "org.jetbrains.kotlin.android"
+    id "org.jetbrains.kotlin.kapt"
+    id "com.google.dagger.hilt.android"
 }
 
 android {
-    compileSdk 32
+    def appId = "tmidev.themeswitch"
+    def minApi = 21
+    def targetApi = 33
+    def appVersionCode = 1
+    def appVersionName = "1.0.0"
+
+    namespace appId
+    compileSdk targetApi
 
     defaultConfig {
-        applicationId "tmidev.themeswitch"
-        minSdk 21
-        targetSdk 32
-        versionCode 1
-        versionName "1.0.0"
+        applicationId appId
+        minSdk minApi
+        targetSdk targetApi
+        versionCode appVersionCode
+        versionName appVersionName
         vectorDrawables.useSupportLibrary true
     }
 
@@ -28,8 +35,8 @@ android {
             minifyEnabled true
             shrinkResources true
             debuggable false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
-                    'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
         }
     }
 
@@ -39,7 +46,8 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "1.8"
+        freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
     }
 
     buildFeatures {
@@ -47,39 +55,41 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion compose_ver
+        kotlinCompilerExtensionVersion composeCompilerVer
     }
 
     packagingOptions {
         resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.activity:activity-compose:1.4.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
+    implementation "androidx.core:core-ktx:1.9.0"
+    implementation "androidx.activity:activity-compose:1.6.1"
 
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_ver"
+    implementation "androidx.compose.animation:animation:$composeUiVer"
+    implementation "androidx.compose.foundation:foundation:$composeUiVer"
+    implementation "androidx.compose.runtime:runtime:$composeUiVer"
+    implementation "androidx.compose.ui:ui:$composeUiVer"
 
-    implementation "androidx.compose.ui:ui:$compose_ver"
-    implementation "androidx.compose.material:material:$compose_ver"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_ver"
-    implementation "androidx.compose.material:material-icons-extended:$compose_ver" // big size if shrink disabled
+    implementation "androidx.compose.material3:material3:$material3Ver"
 
-    implementation "com.google.dagger:hilt-android:$hilt_ver"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_ver"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanistVer"
 
-    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+    implementation "androidx.navigation:navigation-compose:2.5.3"
 
-    implementation 'androidx.navigation:navigation-compose:2.4.2'
+    implementation "com.google.dagger:hilt-android:$hiltVer"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVer"
 
-    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_ver"
+    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
 
-    implementation 'androidx.datastore:datastore-preferences:1.0.0'
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVer"
+    implementation "androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVer"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVer"
 
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_ver"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ver"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVer"
+
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
 }

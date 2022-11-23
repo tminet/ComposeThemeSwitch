@@ -1,7 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="appName">Theme Switch</string>
-    <string name="titleHomeScreen">Home Screen</string>
 
-    <string name="switchAppTheme">Switch App Theme</string>
+    <string name="home">Home</string>
+    <string name="settings">Settings</string>
+
+    <string name="navigateBack">Navigate back</string>
+
+    <string name="dummyItemIndex">Dummy item %d</string>
+
+    <string name="changeAppThemeInstruction">If you want to change the theme of the app, tap on Settings Button in the upper right corner.</string>
+
+    <string name="followAndroidSystem">Follow Android system</string>
+    <string name="lightMode">Light mode</string>
+    <string name="darkMode">Dark mode</string>
 
 </resources>
