@@ -17,7 +17,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import tmidev.themeswitch.R
 import tmidev.themeswitch.domain.type.ThemeStyleType
+import tmidev.themeswitch.util.AppIcons
 
+/**
+ * Compose the options to change theme style.
+ *
+ * @param modifier the [Modifier] to apply on container of this composable.
+ * @param themeStyle the current selected [ThemeStyleType].
+ * @param changeThemeStyle callback with the new selected [ThemeStyleType].
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ThemeStyleSection(
@@ -35,7 +43,7 @@ fun ThemeStyleSection(
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(size = AssistChipDefaults.IconSize),
-                painter = painterResource(id = R.drawable.ic_android),
+                painter = painterResource(id = AppIcons.Android),
                 contentDescription = null
             )
         }
@@ -55,7 +63,7 @@ fun ThemeStyleSection(
             leadingIcon = {
                 Icon(
                     modifier = Modifier.size(size = AssistChipDefaults.IconSize),
-                    painter = painterResource(id = R.drawable.ic_light_mode),
+                    painter = painterResource(id = AppIcons.LightMode),
                     contentDescription = null
                 )
             }
@@ -71,7 +79,7 @@ fun ThemeStyleSection(
             leadingIcon = {
                 Icon(
                     modifier = Modifier.size(size = AssistChipDefaults.IconSize),
-                    painter = painterResource(id = R.drawable.ic_dark_mode),
+                    painter = painterResource(id = AppIcons.DarkMode),
                     contentDescription = null
                 )
             }

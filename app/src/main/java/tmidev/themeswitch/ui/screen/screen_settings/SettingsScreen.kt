@@ -28,28 +28,28 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tmidev.themeswitch.R
+import tmidev.themeswitch.util.AppIcons
 import tmidev.themeswitch.util.isCompatibleWithDynamicColors
 
 /**
  * Compose the Settings Screen.
  *
- * @param modifier modifier to apply on the container of this screen.
- * @param windowInsets [WindowInsets] to be used on this screen.
- * @param onBack [BackHandler] and/or other triggers to navigate back, such as Navigation Icon from
- * TopAppBar.
- * @param viewModel [SettingsViewModel] for this screen. Default is provided by [hiltViewModel].
+ * @param modifier the [Modifier] to apply on container of this screen.
+ * @param windowInsets the [WindowInsets] to apply on container of this screen.
+ * @param onNavigateBack callback to navigate back from this screen.
+ * @param viewModel the [SettingsViewModel]. Default is provided by [hiltViewModel].
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLifecycleComposeApi::class)
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets,
-    onBack: () -> Unit,
+    onNavigateBack: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    BackHandler(onBack = onBack)
+    BackHandler(onBack = onNavigateBack)
 
     Scaffold(
         modifier = modifier,
@@ -57,9 +57,9 @@ fun SettingsScreen(
             TopAppBar(
                 title = { Text(text = stringResource(id = R.string.settings)) },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(onClick = onNavigateBack) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_navigate_back),
+                            painter = painterResource(id = AppIcons.NavigateBack),
                             contentDescription = stringResource(id = R.string.navigateBack)
                         )
                     }

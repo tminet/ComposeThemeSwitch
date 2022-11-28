@@ -26,27 +26,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import tmidev.themeswitch.R
+import tmidev.themeswitch.util.AppIcons
 
 /**
  * Compose the Home Screen.
  *
- * @param modifier modifier to apply on the container of this screen.
- * @param windowInsets [WindowInsets] to be used on this screen.
- * @param onBack [BackHandler] and/or other triggers to navigate back, such as Navigation Icon from
- * TopAppBar.
- * @param navigateToSettingsScreen lambda to handle when should navigate to SettingsScreen.
+ * @param modifier the [Modifier] to apply on container of this screen.
+ * @param windowInsets the [WindowInsets] to apply on container of this screen.
+ * @param onNavigateBack callback to navigate back from this screen.
+ * @param navigateToSettingsScreen callback to navigate to settings screen.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets,
-    onBack: () -> Unit,
+    onNavigateBack: () -> Unit,
     navigateToSettingsScreen: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(state = rememberTopAppBarState())
 
-    BackHandler(onBack = onBack)
+    BackHandler(onBack = onNavigateBack)
 
     Scaffold(
         modifier = modifier.nestedScroll(connection = scrollBehavior.nestedScrollConnection),
@@ -56,7 +56,7 @@ fun HomeScreen(
                 actions = {
                     IconButton(onClick = navigateToSettingsScreen) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_settings),
+                            painter = painterResource(id = AppIcons.Settings),
                             contentDescription = stringResource(id = R.string.settings)
                         )
                     }

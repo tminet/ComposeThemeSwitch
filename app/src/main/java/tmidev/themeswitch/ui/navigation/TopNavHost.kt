@@ -40,7 +40,7 @@ fun TopNavHost(
         HomeScreen(
             modifier = Modifier.fillMaxSize(),
             windowInsets = windowInsets,
-            onBack = onBack,
+            onNavigateBack = onBack,
             navigateToSettingsScreen = {
                 navController.navigate(route = ScreenRouteType.Settings.route) {
                     launchSingleTop = true
@@ -53,7 +53,7 @@ fun TopNavHost(
         SettingsScreen(
             modifier = Modifier.fillMaxSize(),
             windowInsets = windowInsets,
-            onBack = {
+            onNavigateBack = {
                 navController.popBackStack()
             }
         )
