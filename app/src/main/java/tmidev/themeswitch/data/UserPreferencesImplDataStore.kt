@@ -35,21 +35,25 @@ class UserPreferencesImplDataStore @Inject constructor(
         }
 
     override suspend fun toggleDynamicColors() {
-        try {
+        tryIt {
             dataStorePreferences.edit { preferences ->
                 val current = preferences[PreferencesKeys.useDynamicColors] ?: true
                 preferences[PreferencesKeys.useDynamicColors] = !current
             }
-        } catch (exception: Exception) {
-            exception.localizedMessage?.let { Log.e(tag, it) }
         }
     }
 
     override suspend fun changeThemeStyle(themeStyle: ThemeStyleType) {
-        try {
+        tryIt {
             dataStorePreferences.edit { preferences ->
                 preferences[PreferencesKeys.themeStyle] = themeStyle.name
             }
+        }
+    }
+
+    private suspend fun tryIt(action: suspend () -> Unit) {
+        try {
+            action()
         } catch (exception: Exception) {
             exception.localizedMessage?.let { Log.e(tag, it) }
         }
