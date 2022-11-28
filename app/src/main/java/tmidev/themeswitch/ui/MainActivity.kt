@@ -42,40 +42,34 @@ class MainActivity : ComponentActivity() {
             val windowsInsets = appWindowInsets()
 
             when (activityState.isLoading) {
-                true -> {
-                    AppTheme {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .windowInsetsPadding(insets = windowsInsets),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            AppLoadingAnimation()
-
-                            Spacer(modifier = Modifier.height(height = 16.dp))
-
-                            Text(
-                                text = stringResource(id = R.string.appName),
-                                textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.displayMedium
-                            )
-                        }
-                    }
-                }
-                false -> {
-                    val useDarkTheme = shouldUseDarkTheme(themeStyle = activityState.themeStyle)
-
-                    AppTheme(
-                        useDarkTheme = useDarkTheme,
-                        useDynamicColors = activityState.useDynamicColors
+                true -> AppTheme {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .windowInsetsPadding(insets = windowsInsets),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        TopNavHost(
-                            modifier = Modifier.fillMaxSize(),
-                            windowInsets = windowsInsets,
-                            onBack = { moveTaskToBack(true) }
+                        AppLoadingAnimation()
+
+                        Spacer(modifier = Modifier.height(height = 16.dp))
+
+                        Text(
+                            text = stringResource(id = R.string.appName),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.displayMedium
                         )
                     }
+                }
+                false -> AppTheme(
+                    useDarkTheme = shouldUseDarkTheme(themeStyle = activityState.themeStyle),
+                    useDynamicColors = activityState.useDynamicColors
+                ) {
+                    TopNavHost(
+                        modifier = Modifier.fillMaxSize(),
+                        windowInsets = windowsInsets,
+                        onBack = { moveTaskToBack(true) }
+                    )
                 }
             }
         }
