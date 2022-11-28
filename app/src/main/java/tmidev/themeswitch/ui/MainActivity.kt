@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
                     TopNavHost(
                         modifier = Modifier.fillMaxSize(),
                         windowInsets = windowsInsets,
-                        onBack = { moveTaskToBack(true) }
+                        onNavigateBack = { moveTaskToBack(true) }
                     )
                 }
             }
