@@ -8,7 +8,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -66,14 +67,16 @@ fun HomeScreen(
         },
         contentWindowInsets = windowInsets
     ) { innerPadding ->
-        LazyColumn(
+        LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues = innerPadding),
+            columns = GridCells.Adaptive(minSize = 300.dp),
             contentPadding = PaddingValues(all = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(space = 16.dp),
             verticalArrangement = Arrangement.spacedBy(space = 16.dp)
         ) {
-            items(count = 50) { index ->
+            items(count = 50, key = { it }) { index ->
                 Card(modifier = Modifier.fillMaxWidth()) {
                     Column(
                         modifier = Modifier.padding(all = 16.dp),
