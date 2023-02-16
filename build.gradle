@@ -1,11 +1,12 @@
 buildscript {
     ext {
-        agpVer = "7.4.0"
-        kotlinVer = "1.8.0"
-        composeCompilerVer = "1.4.0"
+        agpVer = "7.4.1"
+        javaVer = "11"
+        kotlinVer = "1.8.10"
+        composeCompilerVer = "1.4.2"
         accompanistVer = "0.28.0"
-        hiltVer = "2.44.2"
-        lifecycleVer = "2.6.0-alpha04"
+        hiltVer = "2.45"
+        lifecycleVer = "2.6.0-beta01"
         coroutinesVer = "1.6.4"
     }
 }
