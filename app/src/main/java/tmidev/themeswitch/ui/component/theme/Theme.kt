@@ -21,17 +21,17 @@ import tmidev.themeswitch.util.isCompatibleWithDynamicColors
 /**
  * App theme.
  *
+ * @param systemUiController the [SystemUiController] to control the color of the system bars.
  * @param useDarkTheme when the theme should have dark colors. Default follow the Android theme.
  * @param useDynamicColors when the color scheme should use colors based on user's wallpaper,
  * this only works for api 31 and up. Default is true.
- * @param systemUiController the [SystemUiController] to control the color of the system bars.
  * @param content the content for this theme.
  */
 @Composable
 fun AppTheme(
+    systemUiController: SystemUiController = rememberSystemUiController(),
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     useDynamicColors: Boolean = true,
-    systemUiController: SystemUiController = rememberSystemUiController(),
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -42,13 +42,20 @@ fun AppTheme(
         }
 
         useDarkTheme -> darkColorScheme()
+
         else -> lightColorScheme()
     }
 
-    DisposableEffect(key1 = Unit) {
+    DisposableEffect(
+        key1 = systemUiController,
+        key2 = useDarkTheme,
+        key3 = useDynamicColors
+    ) {
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
-            darkIcons = colorScheme.background.luminance() > 0.5
+            darkIcons = colorScheme.background.luminance() > 0.5,
+            isNavigationBarContrastEnforced = false,
+            transformColorForLightContent = { Color.Black.copy(alpha = 0.7F) }
         )
 
         onDispose { }
