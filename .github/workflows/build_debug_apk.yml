@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: "corretto"
-          java-version: 11
+          java-version: 17
 
       - name: Setup Gradle
         id: setup_gradle_step
@@ -29,9 +29,9 @@ jobs:
       # Gradle files created from Windows may require permission, two options to fix:
       # first option is run the following command on your project: git update-index --chmod=+x gradlew
       # second option is to create a step to run every time along with the workflow:
-      # - name: Permission to Gradlew
-      #   id: permission_gradlew_step
-      #   run: chmod +x gradlew
+      # - name: Permission to gradlew file
+      # id: permission_to_gradlew_file_step
+      # run: chmod +x gradlew
 
       - name: Build Debug APK
         id: build_debug_apk_step

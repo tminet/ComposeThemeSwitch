@@ -1,0 +1,48 @@
+[versions]
+appId = "tmidev.composethemeswitch"
+androidApiTarget = "34"
+androidApiMin = "21"
+buildTools = "34.0.0"
+agp = "8.1.1"
+java = "17"
+kotlin = "1.9.10"
+ksp = "1.9.10-1.0.13"
+composeCompiler = "1.5.3"
+hilt = "2.48"
+hiltExt = "1.1.0-alpha01"
+androidCore = "1.10.1"
+androidActivity = "1.7.2"
+composeBom = "2023.08.00"
+accompanist = "0.32.0"
+navigation = "2.7.1"
+lifecycle = "2.6.1"
+coroutines = "1.7.3"
+datastore = "1.0.0"
+
+[libraries]
+androidx-coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "androidCore" }
+androidx-activityCompose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidActivity" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+compose-animation = { group = "androidx.compose.animation", name = "animation" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+accompanist-systemUiController = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+lifecycle-runtimeKtx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
+lifecycle-viewmodelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-androidCompiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-extCompose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltExt" }
+hilt-extCompiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltExt" }
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
