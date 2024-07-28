@@ -3,6 +3,7 @@ package tmidev.composethemeswitch.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,13 +12,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,12 +28,13 @@ import tmidev.composethemeswitch.ui.component.appWindowInsets
 import tmidev.composethemeswitch.ui.component.theme.AppTheme
 import tmidev.composethemeswitch.ui.navigation.TopNavHost
 import tmidev.composethemeswitch.util.shouldUseDarkTheme
+import tmidev.composethemeswitch.util.transparentEdge
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             val viewModel: MainViewModel = hiltViewModel()
@@ -60,15 +62,25 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                false -> AppTheme(
-                    useDarkTheme = shouldUseDarkTheme(themeStyle = activityState.themeStyle),
-                    useDynamicColors = activityState.useDynamicColors
-                ) {
-                    TopNavHost(
-                        modifier = Modifier.fillMaxSize(),
-                        windowInsets = windowsInsets,
-                        onNavigateBack = { moveTaskToBack(true) }
-                    )
+                false -> {
+                    val shouldUseDarkTheme =
+                        shouldUseDarkTheme(themeStyle = activityState.themeStyle)
+
+                    DisposableEffect(key1 = shouldUseDarkTheme) {
+                        transparentEdge(darkMode = shouldUseDarkTheme)
+                        onDispose { }
+                    }
+
+                    AppTheme(
+                        useDarkTheme = shouldUseDarkTheme,
+                        useDynamicColors = activityState.useDynamicColors
+                    ) {
+                        TopNavHost(
+                            modifier = Modifier.fillMaxSize(),
+                            windowInsets = windowsInsets,
+                            onNavigateBack = { moveTaskToBack(true) }
+                        )
+                    }
                 }
             }
         }

@@ -48,6 +48,8 @@ android {
 
     buildFeatures.compose = true
 
+    composeCompiler.enableStrongSkippingMode = true
+
     packaging.resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
 }
 
@@ -61,8 +63,6 @@ dependencies {
     implementation(libs.compose.runtime)
     implementation(libs.compose.ui)
     implementation(libs.compose.material3)
-
-    implementation(libs.accompanist.systemUiController)
 
     implementation(libs.navigation.compose)
 
