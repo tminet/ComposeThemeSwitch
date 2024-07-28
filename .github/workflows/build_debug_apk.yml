@@ -9,22 +9,22 @@ jobs:
     steps:
       - name: Checkout
         id: checkout_step
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Validate Gradle Wrapper
         id: validate_gradle_wrapper_step
-        uses: gradle/wrapper-validation-action@v1
+        uses: gradle/actions/wrapper-validation@v3
 
       - name: Setup JDK
         id: setup_jdk_step
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: "corretto"
           java-version: 17
 
       - name: Setup Gradle
         id: setup_gradle_step
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
 
       # Gradle files created from Windows may require permission, two options to fix:
       # first option is run the following command on your project: git update-index --chmod=+x gradlew
@@ -39,7 +39,7 @@ jobs:
 
       - name: Upload Artifact
         id: upload_artifact_step
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Debug Artifacts
           path: app/build/outputs/
